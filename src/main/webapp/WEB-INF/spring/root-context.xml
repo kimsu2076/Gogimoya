@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- [Progress 1] 데이터베이스 연결 설정을 위한 DataSource 빈 등록 (MySQL 3316 포트 적용) -->
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3316/gogimoya_db?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true" />
+		<property name="username" value="root" />
+		<property name="password" value="1234" />
+	</bean>
+
+	<!-- [Progress 2] MyBatis SqlSessionFactory 설정 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 매퍼 파일 위치 설정 (향후 필요 시 추가) -->
+		<!-- <property name="mapperLocations" value="classpath:/mappers/**/*.xml" /> -->
+	</bean>
+
+	<!-- [Progress 3] MyBatis 매퍼 인터페이스 스캔 설정 -->
+	<mybatis-spring:scan base-package="com.kopo.GogimoyaPjt.mapper" />
+
+</beans>
