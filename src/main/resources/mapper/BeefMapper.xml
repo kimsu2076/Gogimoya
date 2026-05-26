@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-0-mapper.dtd">
+<mapper namespace="com.kopo.GogimoyaPjt.mapper.BeefMapper">
+
+    <select id="selectAllBeefCuts" resultType="com.kopo.GogimoyaPjt.vo.BeefCutsIntroVO">
+        SELECT 
+            cut_name AS cutName,
+            large_category AS largeCategory,
+            description
+        FROM BEEFCUTS_INTRO
+    </select>
+
+    <select id="selectBeefCutByName" resultType="com.kopo.GogimoyaPjt.vo.BeefCutsIntroVO">
+        SELECT 
+            cut_name AS cutName,
+            large_category AS largeCategory,
+            description
+        FROM BEEFCUTS_INTRO
+        WHERE cut_name = #{cutName}
+    </select>
+
+</mapper>

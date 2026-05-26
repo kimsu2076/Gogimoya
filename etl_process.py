@@ -10,7 +10,7 @@ file_uses = base_path + "BEEFCUTS_USES.xlsx"
 
 # 2. MySQL 데이터베이스 연결 설정
 # 구조: mysql+pymysql://유저아이디:비밀번호@호스트:포트/데이터베이스이름
-engine = create_engine("mysql+pymysql://root:1234@localhost:3316/gogimoya_db")
+engine = create_engine("mysql+pymysql://kopouser:kopouser@localhost:3306/gogimoya_db")
 
 print("=== 🥩 고기모야 데이터 파이프라인 가동 시작 ===")
 

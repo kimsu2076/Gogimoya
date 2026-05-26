@@ -1,0 +1,39 @@
+# 🚀 고기모야(Gogimoya) Node.js 프로젝트 가동 매뉴얼 (howto_node.txt)
+
+본 프로젝트는 Node.js 환경에서 Express와 MySQL을 연동하여 소고기 데이터를 관리하는 애플리케이션입니다.
+
+## 1. 사전 준비 사항
+- **Node.js**: v18 버전 이상 설치 권장
+- **MySQL**: 3306 포트에서 가동 중이어야 하며, `kopodb` 데이터베이스 내 `gogimoya` 스키마에 다음 테이블이 존재해야 합니다.
+  - `BEEFCUTS_INTRO`, `BEEFCUTS_NAMES`, `BEEFCUTS_USES`
+  - (데이터가 없다면 `etl_process.py`를 통해 적재하십시오.)
+
+## 2. 의존성 설치
+터미널(또는 CMD)에서 프로젝트 루트 폴더로 이동한 후 다음 명령어를 입력합니다.
+```bash
+npm install
+```
+- 주요 패키지: `express`, `mysql2`, `ejs`, `dotenv`
+
+## 3. 애플리케이션 가동
+다음 명령어를 통해 서버를 실행합니다.
+```bash
+node server.js
+```
+서버가 정상적으로 실행되면 다음과 같은 메시지가 출력됩니다:
+`🚀 서버가 가동되었습니다: http://localhost:3000`
+
+## 4. 주요 기능 및 접속 경로
+- **웹 대시보드 (메인)**: [http://localhost:3000](http://localhost:3000)
+  - 모든 데이터를 한눈에 확인하는 시각적 인터페이스를 제공합니다.
+- **데이터 조회 API**:
+  - 기본 정보: [http://localhost:3000/api/intro](http://localhost:3000/api/intro)
+  - 다국어 명칭: [http://localhost:3000/api/names](http://localhost:3000/api/names)
+  - 용도별 데이터: [http://localhost:3000/api/uses](http://localhost:3000/api/uses)
+
+## 5. 설정 정보 (`db.js`)
+- DB 연결 정보는 `db.js` 파일에서 수정할 수 있습니다. (기본값: kopouser / kopouser / kopodb)
+
+---
+**작성일**: 2026-05-26
+**담당**: Node.js 풀스택 개발자 Gemini CLI

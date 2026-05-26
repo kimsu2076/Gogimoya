@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; background-color: #f0f2f5; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        .chat-container { flex: 1; max-width: 800px; margin: 20px auto; width: 95%; background: white; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; }
+        .chat-header { background: #c62828; color: white; padding: 20px; text-align: center; font-size: 1.5em; font-weight: bold; }
+        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .message { max-width: 80%; padding: 12px 16px; border-radius: 20px; line-height: 1.5; word-break: break-all; }
+        .user-message { align-self: flex-end; background: #c62828; color: white; border-bottom-right-radius: 5px; }
+        .bot-message { align-self: flex-start; background: #e9ecef; color: #333; border-bottom-left-radius: 5px; white-space: pre-wrap; }
+        .chat-input-area { border-top: 1px solid #eee; padding: 20px; display: flex; gap: 10px; }
+        input[type="text"] { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 25px; outline: none; }
+        button { padding: 12px 24px; background: #c62828; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #b71c1c; }
+        .suggest-chips { padding: 0 20px 10px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .chip { padding: 6px 12px; background: #ffebee; color: #c62828; border-radius: 15px; font-size: 0.85em; cursor: pointer; border: 1px solid #ffcdd2; }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="chat-header">🥩 고기모야 AI Q&A</div>
+        
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot-message">안녕하세요! 고기모야입니다. 궁금한 소고기 부위나 요리법에 대해 질문해주세요.<br>예: "안심은 어떤 부위야?", "스테이크용 고기 추천해줘"</div>
+        </div>
+
+        <div class="suggest-chips">
+            <div class="chip" onclick="askChip('안심에 대해 알려줘')">안심 정보</div>
+            <div class="chip" onclick="askChip('구이용 고기 추천해줘')">구이용 추천</div>
+            <div class="chip" onclick="askChip('미국에서는 등심을 뭐라고 불러?')">미국 등심 명칭</div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="user-input" placeholder="질문을 입력하세요..." onkeypress="if(event.keyCode==13) sendMessage()">
+            <button onclick="sendMessage()">전송</button>
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+
+        function appendMessage(text, isUser) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            msgDiv.innerText = text;
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const question = userInput.value.trim();
+            if (!question) return;
+
+            appendMessage(question, true);
+            userInput.value = '';
+
+            try {
+                const response = await fetch('/api/ask', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question })
+                });
+                const data = await response.json();
+                appendMessage(data.answer, false);
+            } catch (err) {
+                appendMessage("오류가 발생했습니다. 다시 시도해주세요.", false);
+            }
+        }
+
+        function askChip(text) {
+            userInput.value = text;
+            sendMessage();
+        }
+    </script>
+</body>
+</html>

@@ -31,3 +31,30 @@
   - STS에서 Tomcat 서버 기동 시 'index.ejs' 파일을 찾지 못해 퍼블리싱이 중단되는 오류 발생 확인.
   - 해당 경로에 임시 'index.ejs' 파일을 생성하여 빌드 및 퍼블리싱 프로세스가 정상적으로 진행되도록 조치함.
   - 프로젝트가 기본적으로 JSP를 사용하도록 설정되어 있으나, 메타데이터상에 EJS 참조가 남아있을 가능성에 대비함.
+
+[2026-05-26 20:17]
+- 작업 내용: HTTP 404 에러 해결 및 메인 컨트롤러 구현
+- 변경된 파일 목록:
+  - src/main/java/com/kopo/GogimoyaPjt/controller/HomeController.java
+  - src/main/webapp/WEB-INF/views/index.jsp
+- 코딩 과정 특이사항:
+  - 루트 경로('/') 요청을 처리할 컨트롤러가 없어 발생한 404 에러를 확인하고 'HomeController'를 생성하여 매핑함.
+  - 'index.jsp'를 수정하여 컨트롤러에서 전달된 메시지를 화면에 출력하도록 보완함.
+  - 'servlet-context.xml'의 컴포넌트 스캔 범위를 재확인하여 컨트롤러 빈 등록이 정상적으로 이루어지도록 함.
+
+[2026-05-26 20:25]
+- 작업 내용: 소고기 부위 도감 기능 구현 (첫 기능 구현)
+- 변경된 파일 목록:
+  - src/main/java/com/kopo/GogimoyaPjt/mapper/BeefMapper.java
+  - src/main/resources/mapper/BeefMapper.xml
+  - src/main/resources/root-context.xml
+  - src/main/java/com/kopo/GogimoyaPjt/service/BeefService.java
+  - src/main/java/com/kopo/GogimoyaPjt/service/BeefServiceImpl.java
+  - src/main/java/com/kopo/GogimoyaPjt/controller/HomeController.java
+  - src/main/webapp/WEB-INF/views/index.jsp
+- 코딩 과정 특이사항:
+  - 단순한 Hello World 출력이 아닌, 실제 DB 데이터를 활용한 '소고기 부위 도감' 기능을 구현함.
+  - MyBatis 매퍼(Mapper)를 통해 BEEFCUTS_INTRO 테이블의 데이터를 조회하는 로직을 추가함.
+  - 서비스(Service) 계층을 구축하여 비즈니스 로직을 분리함.
+  - 메인 화면(index.jsp)에 JSTL을 사용하여 소고기 부위 목록을 표 형식으로 시각화함.
+  - 데이터가 없을 경우를 대비한 안내 문구를 추가하여 사용자 경험을 개선함.
