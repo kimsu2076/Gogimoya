@@ -1,0 +1,42 @@
+# 🥩 고기모야 프로젝트 (GogimoyaPjt) 사용 가이드 (howto_sts.txt)
+
+본 가이드는 개발자 및 클라이언트가 프로젝트 환경을 구축하고 실행하는 방법을 구체적으로 안내합니다.
+
+## 1. 데이터베이스(DB) 환경 설정
+프로젝트는 MySQL을 기본 DB로 사용합니다.
+
+- **포트**: 3306 (기본 설정)
+- **데이터베이스명**: `kopodb`
+- **사용자 계정**: `root` / **비밀번호**: `1234`
+- **테이블 생성**: 
+  - `BEEFCUTS_INTRO`: 소고기 부위 기본 정보
+  - `BEEFCUTS_NAMES`: 다국어 명칭 매핑 정보
+  - `BEEFCUTS_USES`: 용도별 요리법 정보
+  ※ `etl_process.py`를 실행하여 엑셀 데이터를 DB로 적재할 수 있습니다. (단, Python 환경 및 pymysql 설치 필요)
+
+## 2. 개발 도구 및 서버 설정
+- **IDE**: STS (Spring Tool Suite) 3.9.18.RELEASE 권장
+- **Java**: JDK 11
+- **Server**: Apache Tomcat v9.0
+- **Build**: Maven
+
+### [상세 단계]
+1. **프로젝트 임포트**: STS 실행 -> `File` > `Import` > `Existing Maven Projects` 선택 -> 프로젝트 폴더 선택 후 완료.
+2. **서버 등록**: `Servers` 탭에서 `New Server` > `Apache Tomcat v9.0` 선택 -> 프로젝트를 서버에 추가(Add).
+3. **포트 충돌 주의**: 현재 로컬 톰캣 포트는 `8181`로 권장 설정되어 있습니다. (필요 시 `server.xml` 수정)
+
+## 3. 주요 파일 및 구조 안내
+- **설정 파일**:
+  - `src/main/resources/root-context.xml`: DB 연결 정보 및 MyBatis 설정 (포트 3306, 유저 root 등)
+  - `src/main/webapp/WEB-INF/web.xml`: 스프링 리스너 및 설정 로드 경로 정의
+- **데이터 모델(VO)**: `src/main/java/com/kopo/GogimoyaPjt/vo/`
+  - 각 테이블과 1:1 매핑되는 자바 객체들입니다. MyBatis를 통해 DB 데이터를 담는 용도로 사용됩니다.
+- **의존성 관리**: `pom.xml`에 MySQL 커넥터, JDBC, DBCP, MyBatis 설정이 모두 포함되어 있습니다.
+
+## 4. 실행 및 확인 방법
+1. STS에서 프로젝트 우클릭 -> `Run As` > `Run on Server` 실행.
+2. 브라우저에서 `http://localhost:8181/GogimoyaPjt/` 접속 (포트 및 context path는 환경에 따라 다를 수 있음).
+3. `log/log_feature_sts_develop.txt` 파일을 통해 최신 변경 사항과 개발 이력을 추적할 수 있습니다.
+
+---
+
