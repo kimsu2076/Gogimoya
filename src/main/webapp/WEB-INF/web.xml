@@ -6,6 +6,17 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
 	<display-name>Archetype Created Web Application</display-name>
+
+	<!-- root-context.xml (서비스, 리포지토리, DB 설정) 로드 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:root-context.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

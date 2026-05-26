@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+
+	<!-- Root Context: 모든 서블릿과 필터가 공유하는 서비스 계층의 빈을 정의합니다. -->
+
+	<!-- 데이터 소스 설정 (MySQL 3306, kopodb) -->
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/kopodb?serverTimezone=UTC&amp;useSSL=false&amp;allowPublicKeyRetrieval=true" />
+		<property name="username" value="root" />
+		<property name="password" value="1234" />
+	</bean>
+
+	<!-- MyBatis SqlSessionFactory 설정 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- VO 클래스 패키지 별칭 설정 -->
+		<property name="typeAliasesPackage" value="com.kopo.GogimoyaPjt.vo" />
+	</bean>
+
+	<!-- MyBatis 매퍼 스캔 -->
+	<mybatis-spring:scan base-package="com.kopo.GogimoyaPjt.mapper" />
+
+</beans>
